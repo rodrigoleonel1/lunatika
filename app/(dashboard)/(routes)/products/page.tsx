@@ -17,7 +17,6 @@ interface Product {
 
 export default function ProductList() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -28,21 +27,17 @@ export default function ProductList() {
           .order("createdAt", { ascending: false }); // Ordena los productos por fecha de creación
 
         if (error) {
-          setError(error.message);
+          console.log(error);
         } else if (data) {
           setProducts(data);
         }
       } catch (error: any) {
-        setError("Hubo un error al obtener los productos");
+        console.log("Hubo un error al obtener los productos");
       }
     };
 
     fetchProducts();
   }, []);
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   if (products.length === 0) {
     return <div>No hay productos creados.</div>;
