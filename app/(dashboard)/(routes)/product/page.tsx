@@ -162,7 +162,7 @@ export default function ProductPage() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 max-w-3xl m-auto mt-20"
+        className="space-y-8 p-4 m-auto"
       >
         <FormField
           control={form.control}
