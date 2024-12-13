@@ -31,8 +31,8 @@ export default function ProductList() {
         } else if (data) {
           setProducts(data);
         }
-      } catch (error: any) {
-        console.log("Hubo un error al obtener los productos");
+      } catch (error) {
+        console.log(error);
       }
     };
 
