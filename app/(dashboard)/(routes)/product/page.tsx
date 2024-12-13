@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z
@@ -59,6 +60,8 @@ export default function ProductPage() {
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([]);
+
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -154,6 +157,7 @@ export default function ProductPage() {
 
     const data = await res.json();
     console.log(data[0]);
+    router.push('/products');
   };
 
   if (error) return <p>Error: {error}</p>;
