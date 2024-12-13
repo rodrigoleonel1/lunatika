@@ -120,6 +120,8 @@ export default function ProductPage() {
             upsert: false,
           });
 
+          console.log(data)
+
         if (error) {
           throw error;
         }
