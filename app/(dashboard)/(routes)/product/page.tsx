@@ -134,8 +134,8 @@ export default function ProductPage() {
       }
 
       setUploadedImageUrls(uploadedUrls);
-    } catch (error: any) {
-      setError(error.message || "Hubo un error al subir las imágenes.");
+    } catch (error) {
+      console.log(error)
     } finally {
       setUploading(false);
     }
