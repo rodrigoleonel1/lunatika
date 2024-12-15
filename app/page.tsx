@@ -7,10 +7,10 @@ export default function Home() {
       <Navbar />
       <ul className="p-4 flex flex-col gap-4">
         <li>
-          <Link href={"/product"}>Crear Producto</Link>
+          <Link href={"/dashboard/product"}>Crear Producto</Link>
         </li>
         <li>
-          <Link href={"/products"}>Ver Productos</Link>
+          <Link href={"/dashboard/products"}>Ver Productos</Link>
         </li>
       </ul>
     </>
