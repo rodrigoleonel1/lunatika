@@ -3,7 +3,6 @@ import Footer from "@/components/footer";
 import Hero from "@/components/hero";
 import Navbar from "@/components/navbar";
 import ProductList from "@/components/product-list";
-import Link from "next/link";
 
 export default async function Home() {
   const items = await getFeaturedProducts();
