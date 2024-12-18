@@ -2,7 +2,7 @@ import { Product } from "@/lib/types";
 
 export const getProducts = async (): Promise<Product[]> => {
   // Correct the URL by removing the extra slash
-  const res = await fetch("http://localhost:3000/api/products", {
+  const res = await fetch("/api/products", {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -22,7 +22,7 @@ export const getProducts = async (): Promise<Product[]> => {
 };
 
 export const getFeaturedProducts = async (): Promise<Product[]> => {
-  const res = await fetch("http://localhost:3000/api/products", {
+  const res = await fetch("/api/products", {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
