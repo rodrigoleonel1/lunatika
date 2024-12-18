@@ -4,8 +4,6 @@ import Hero from "@/components/hero";
 import Navbar from "@/components/navbar";
 import ProductList from "@/components/product-list";
 
-export const revalidate = 0;
-
 export default async function Home() {
   const items = await getFeaturedProducts();
 
