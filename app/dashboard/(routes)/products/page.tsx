@@ -60,6 +60,7 @@ export default function ProductList() {
             className="border p-4 rounded-md shadow-md hover:shadow-lg"
           >
             <h2 className="text-xl font-semibold">{product.name}</h2>
+            <p className="text-gray-600">Id: {product.id}</p>
             <p className="text-gray-600">Precio: ${product.price}</p>
             <p className="text-gray-600">Stock: {product.stock}</p>
             <p className="text-gray-500">

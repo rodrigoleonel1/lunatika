@@ -1,18 +1,19 @@
+import { getFeaturedProducts } from "@/actions/getProducts";
+import Footer from "@/components/footer";
+import Hero from "@/components/hero";
 import Navbar from "@/components/navbar";
+import ProductList from "@/components/product-list";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const items = await getFeaturedProducts();
+
   return (
     <>
       <Navbar />
-      <ul className="p-4 flex flex-col gap-4">
-        <li>
-          <Link href={"/dashboard/product"}>Crear Producto</Link>
-        </li>
-        <li>
-          <Link href={"/dashboard/products"}>Ver Productos</Link>
-        </li>
-      </ul>
+      <Hero />
+      <ProductList title="Productos destacados" items={items} />
+      <Footer />
     </>
   );
 }
