@@ -3,16 +3,18 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { productId: string } }
+  { params }: { params: Promise<{ productId: string }> }
 ) {
   try {
 
-    console.log(params.productId)
+    const productId = (await params).productId 
+
+    console.log(productId)
 
     const { data, error } = await supabase
       .from("product")
       .select("*")
-      .eq("id", params.productId)
+      .eq("id", productId)
       .single();
 
     if (error) {
