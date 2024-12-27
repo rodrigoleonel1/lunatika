@@ -31,22 +31,3 @@ export const getProducts = async (query: Query): Promise<Product[]> => {
   const data = await res.json();
   return data;
 };
-
-export const getFeaturedProducts = async (): Promise<Product[]> => {
-  const res = await fetch(`${URL}/api/products`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch products: ${res.statusText}`);
-  }
-
-  const data = await res.json();
-
-  const featuredProducts = data.filter(
-    (product: Product) => product.isFeatured
-  );
-
-  return featuredProducts;
-};
