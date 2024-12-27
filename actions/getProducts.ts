@@ -1,25 +1,35 @@
 import { Product } from "@/lib/types";
-const URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
+const URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
 
-export const getProducts = async (): Promise<Product[]> => {
-  // Correct the URL by removing the extra slash
-  const res = await fetch(`${URL}/api/products`, {
+interface Query {
+  category?: string;
+  material?: string;
+  isFeatured?: boolean;
+}
+
+export const getProducts = async (query: Query): Promise<Product[]> => {
+  let url = `${URL}/api/products?`;
+  if (query.category) {
+    url += `category=${query.category}&`;
+  }
+  if (query.material) {
+    url += `material=${query.material}&`;
+  }
+  if (query.isFeatured) {
+    url += `featured=${query.isFeatured}&`;
+  }
+
+  const res = await fetch(url, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
 
-  // Ensure the response is valid before parsing
   if (!res.ok) {
     throw new Error(`Failed to fetch products: ${res.statusText}`);
   }
 
-  // Parse the JSON data
   const data = await res.json();
-
-  // Log the data (optional)
-  console.log(data);
-
-  return data; // Return the parsed data
+  return data;
 };
 
 export const getFeaturedProducts = async (): Promise<Product[]> => {

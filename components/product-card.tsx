@@ -1,36 +1,34 @@
 import { Product } from "@/lib/types";
-import { Button } from "./ui/button";
-
 
 interface ProductCard {
-  product: Product
+  product: Product;
 }
 
 export default function ProductCard({ product }: ProductCard) {
-
-console.log(product)
   return (
-    <div className="group relative">
-      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 max-h-64">
+    <section className=" bg-white rounded-lg shadow-md p-4">
+      <div className="w-full overflow-hidden rounded-lg bg-gray-200 h-[240px] min-[400px]:h-[360px] sm:h-[320px] md:h-[360px] lg:h-[240px] xl:h-[264px]">
         <img
           src={product.images[0]}
           alt={product.name}
-          className="h-full w-full object-cover object-bottom group-hover:opacity-75"
+          className="w-full h-full object-cover"
         />
       </div>
-      <div className="mt-4 flex justify-between">
+      <footer className="mt-4 flex justify-between">
         <div>
-          <h3 className="text-sm text-gray-700">
-            <a href="#">
-              <span aria-hidden="true" className="absolute inset-0" />
-              {product.name}
-            </a>
-          </h3>
-          <p className="mt-1 text-sm text-gray-500">{product.category_id}</p>
+          <h3 className="text-sm font-medium text-gray-700">{product.name}</h3>
+          <div className="flex gap-2">
+            <p className="mt-1 text-sm text-gray-500">
+              {product.category.name}
+            </p>
+            <span className="mt-1 text-sm text-gray-500">|</span>
+            <p className="mt-1 text-sm text-gray-500">
+              {product.material.name}
+            </p>
+          </div>
         </div>
         <p className="text-sm font-medium text-gray-900">${product.price}</p>
-      </div>
-      <Button className="w-full">Ver producto</Button>
-    </div>
+      </footer>
+    </section>
   );
 }

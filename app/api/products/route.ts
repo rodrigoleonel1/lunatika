@@ -1,11 +1,41 @@
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+  isFeatured: boolean;
+  isArchived: boolean;
+  images: string[];
+  createdAt: string;
+  updatedAt: string;
+  category: string;
+  material: string;
+}
+
 export async function GET() {
   try {
     const { data, error } = await supabase
       .from("product")
-      .select("*")
+      .select(`
+        id,
+        name,
+        price,
+        stock,
+        isFeatured,
+        isArchived,
+        images,
+        createdAt,
+        updatedAt,
+        category_id (
+          name
+        ),
+        material_id (
+          name
+        )
+      `)
       .order("createdAt", { ascending: false });
 
     if (error) {
@@ -13,10 +43,7 @@ export async function GET() {
       return new NextResponse("DB Error", { status: 500 });
     }
 
-    const products = data;
-    console.log(data);
-
-    return NextResponse.json(products, { status: 200 });
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.log("[PRODUCTS_GET]", error);
     return new NextResponse("Internal error", { status: 500 });

@@ -12,6 +12,12 @@ export interface Product {
   id: string;
   category_id: string;
   material_id: string;
+  category: {
+    name: string;
+  };
+  material: {
+    name: string;
+  };
   name: string;
   price: number;
   stock: number;
