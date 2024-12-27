@@ -21,7 +21,7 @@ export const CategoriesList = ({ title, items }: CategoriesListProps) => {
           <Link
             href={`/category/${item.name}`}
             key={item.id}
-            className="flex flex-col items-center justify-between bg-white rounded-lg gap-4 shadow-md md:p-4"
+            className="flex flex-col items-center justify-between bg-white rounded-lg gap-4 shadow-md p-4"
           >
             <div className="w-full overflow-hidden rounded-lg bg-gray-200">
               <img
