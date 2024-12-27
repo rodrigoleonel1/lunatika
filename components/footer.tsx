@@ -24,7 +24,7 @@ export default function Footer() {
                 Instagram
               </a>
               <a
-                href="https://api.whatsapp.com/message/IUMJKR6AO5P3K1?autoload=1&app_absent=0"
+                href="https://wa.me/5491168501099"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white flex gap-1"

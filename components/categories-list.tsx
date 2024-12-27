@@ -13,7 +13,7 @@ interface CategoriesListProps {
 export const CategoriesList = ({ title, items }: CategoriesListProps) => {
   return (
     <Container>
-      <Heading title={title} description="" />
+      <Heading title={title} description="Explora nuestras categorías." />
 
       {items.length === 0 && <NoResults />}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">

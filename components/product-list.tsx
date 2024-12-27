@@ -12,9 +12,7 @@ interface ProductListProps {
 export default function ProductList({ title, items }: ProductListProps) {
   return (
     <Container>
-      <div className="flex items-center justify-between mb-4">
-        <Heading title={title} description="" />
-      </div>
+      <Heading title={title} description="" />
       {items.length === 0 && <NoResults />}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {items.map((item) => (

@@ -23,7 +23,7 @@ export default function Navbar() {
 
   return (
     <header className="border-b h-16 flex items-center">
-      <div className="flex justify-between max-w-7xl mx-auto w-full gap-4 px-6">
+      <div className="flex justify-between max-w-6xl mx-auto w-full gap-4 px-6">
         <Link href="/">
           <p className="font-bold text-2xl tracking-tighter">lunatika.ac</p>
         </Link>
