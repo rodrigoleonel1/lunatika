@@ -1,6 +1,8 @@
 export interface Category {
   id: string;
   name: string;
+  billboard: string;
+  createdAt: Date;
 }
 
 export interface Material {

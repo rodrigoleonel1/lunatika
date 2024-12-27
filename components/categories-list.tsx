@@ -21,10 +21,19 @@ export const CategoriesList = ({ title, items }: CategoriesListProps) => {
           <Link
             href={`/category/${item.name}`}
             key={item.id}
-            className="flex items-center justify-between bg-white rounded-lg shadow-md p-4"
+            className="flex flex-col items-center justify-between bg-white rounded-lg gap-4 shadow-md p-4"
           >
-            <p>{item.name}</p>
-            <IoChevronForward />
+            <div className="w-full overflow-hidden rounded-lg bg-gray-200">
+              <img
+                src={item.billboard}
+                alt={item.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="flex justify-between w-full items-center">
+              <p className="text-xl font-semibold">{item.name}</p>
+              <IoChevronForward size={20} className="mt-1" />
+            </div>
           </Link>
         ))}
       </div>
