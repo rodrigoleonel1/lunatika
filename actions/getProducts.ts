@@ -16,8 +16,10 @@ export const getProducts = async (query: Query): Promise<Product[]> => {
     url += `material=${query.material}&`;
   }
   if (query.isFeatured) {
-    url += `featured=${query.isFeatured}&`;
+    url += `featured=${query.isFeatured}`;
   }
+
+  console.log(url)
 
   const res = await fetch(url, {
     method: "GET",

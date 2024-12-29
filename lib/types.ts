@@ -14,12 +14,6 @@ export interface Product {
   id: string;
   category_id: string;
   material_id: string;
-  category: {
-    name: string;
-  };
-  material: {
-    name: string;
-  };
   name: string;
   price: number;
   stock: number;
@@ -28,4 +22,10 @@ export interface Product {
   images: string[];
   createdAt: Date;
   updatedAt: Date;
+  category: {
+    name: string;
+  };
+  material: {
+    name: string;
+  };
 }
