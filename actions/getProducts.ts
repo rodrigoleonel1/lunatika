@@ -1,11 +1,5 @@
-import { Product } from "@/lib/types";
+import { Product, Query } from "@/lib/types";
 const URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
-
-interface Query {
-  category?: string;
-  material?: string;
-  isFeatured?: boolean;
-}
 
 export const getProducts = async (query: Query): Promise<Product[]> => {
   let url = `${URL}/api/products?`;
@@ -16,10 +10,11 @@ export const getProducts = async (query: Query): Promise<Product[]> => {
     url += `material=${query.material}&`;
   }
   if (query.isFeatured) {
-    url += `featured=${query.isFeatured}`;
+    url += `featured=${query.isFeatured}&`;
   }
-
-  console.log(url)
+  if (query.limit) {
+    url += `limit=${query.limit}&`;
+  }
 
   const res = await fetch(url, {
     method: "GET",

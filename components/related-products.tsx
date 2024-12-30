@@ -12,6 +12,8 @@ export default async function RelatedProducts({
 }: RelatedProductsProps) {
   const relatedProducts = await getProducts({
     category: product.category.name,
+    material: product.material.name,
+    limit: 4,
   });
 
   return (
@@ -20,7 +22,7 @@ export default async function RelatedProducts({
         title={"Productos relacionados"}
         description={"También te puede gustar."}
       />
-      <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {relatedProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

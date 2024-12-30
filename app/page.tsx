@@ -5,14 +5,19 @@ import Hero from "@/components/hero";
 import ProductList from "@/components/product-list";
 
 export default async function Home() {
-  const products = await getProducts({ isFeatured: true });
+  const query = { isFeatured: true, limit: 4 };
+  const products = await getProducts(query);
   const categories = await getCategories();
 
   return (
     <>
       <Hero />
       <CategoriesList title="Categorías" items={categories} />
-      <ProductList title="Productos destacados" items={products} />
+      <ProductList
+        title="Productos destacados"
+        items={products}
+        query={query}
+      />
     </>
   );
 }

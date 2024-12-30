@@ -29,3 +29,10 @@ export interface Product {
     name: string;
   };
 }
+
+export interface Query {
+  category?: string;
+  material?: string;
+  isFeatured?: boolean;
+  limit?: number;
+}

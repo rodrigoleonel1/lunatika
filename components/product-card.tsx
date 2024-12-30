@@ -10,11 +10,18 @@ export default function ProductCard({ product }: ProductCard) {
   return (
     <section className=" bg-white rounded-lg shadow-md p-4 space-y-4">
       <div className="w-full overflow-hidden rounded-lg bg-gray-200 h-[240px] min-[400px]:h-[360px] sm:h-[320px] md:h-[360px] lg:h-[240px]">
-        <img
-          src={product.images[0]}
-          alt={product.name}
-          className="w-full h-full object-cover"
-        />
+        {product.images[0].endsWith(".mp4") ? (
+          <video className="h-full w-full object-cover object-center" >
+            <source src={product.images[0]} type="video/mp4" />
+            Tu navegador no soporta el elemento de video.
+          </video>
+        ) : (
+          <img
+            src={product.images[0]}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
+        )}
       </div>
       <main className="flex justify-between">
         <div>
