@@ -50,7 +50,7 @@ export default function MaterialSelect({
       <Select onValueChange={handleCategoryChange} value={selectedCategory}>
         <SelectTrigger className="md:w-[180px]">
           <SelectValue
-            placeholder={query.category ? query.category : "Categorías"}
+            placeholder={query?.category ? query.category : "Categorías"}
           />
         </SelectTrigger>
         <SelectContent>
@@ -64,7 +64,7 @@ export default function MaterialSelect({
       <Select onValueChange={handleMaterialChange} value={selectedMaterial}>
         <SelectTrigger className="md:w-[180px]">
           <SelectValue
-            placeholder={query.material ? query.material : "Materiales"}
+            placeholder={query?.material ? query.material : "Materiales"}
           />
         </SelectTrigger>
         <SelectContent>
