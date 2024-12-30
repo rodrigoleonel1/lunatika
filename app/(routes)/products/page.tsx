@@ -1,8 +1,6 @@
-import Link from "next/link";
 import { getProducts } from "@/actions/getProducts";
-
 import ProductList from "@/components/product-list";
-import { Button } from "@/components/ui/button";
+
 
 export default async function ProductsPage({
   searchParams,
