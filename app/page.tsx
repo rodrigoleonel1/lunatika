@@ -4,6 +4,8 @@ import { CategoriesList } from "@/components/categories-list";
 import Hero from "@/components/hero";
 import ProductList from "@/components/product-list";
 
+export const revalidate = 3600;
+
 export default async function Home() {
   const query = { isFeatured: true, limit: 4 };
   const products = await getProducts(query);
