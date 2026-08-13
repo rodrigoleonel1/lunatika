@@ -60,7 +60,11 @@ export const ProductForm = ({
     : "Agrega un nuevo producto";
   const action = product ? "Guardar cambios" : "Agregar producto";
 
-  const form = useForm<z.infer<typeof productSchema>>({
+  const form = useForm<
+    z.input<typeof productSchema>,
+    unknown,
+    z.output<typeof productSchema>
+  >({
     resolver: zodResolver(productSchema),
     defaultValues: product
       ? {
@@ -210,6 +214,7 @@ export const ProductForm = ({
                       placeholder="Ingresá el precio del producto"
                       type="number"
                       {...field}
+                      value={field.value as number}
                     />
                   </FormControl>
                   <FormMessage />
@@ -228,6 +233,7 @@ export const ProductForm = ({
                       placeholder="Ingresá el stock del producto"
                       type="number"
                       {...field}
+                      value={field.value as number}
                     />
                   </FormControl>
                   <FormMessage />

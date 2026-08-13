@@ -81,7 +81,7 @@ lib/
   types.ts / zod.ts     Tipos y validaciones compartidas
 actions/                Funciones server-side que consultan MongoDB directamente
 scripts/                Scripts de mantenimiento (ver tabla más abajo)
-auth.ts / auth.config.ts / middleware.ts   Autenticación y rutas protegidas
+auth.ts / auth.config.ts / proxy.ts   Autenticación y rutas protegidas
 vercel.json             Config del cron de keep-alive de Supabase
 ```
  
@@ -219,7 +219,7 @@ sin ayuda:
  
 - Cambiá la contraseña de la administradora apenas puedas:
   `npm run seed:admin -- --username=tu-usuario --password=nueva-clave`.
-- `middleware.ts` bloquea `/admin/*`, las escrituras (`POST/PUT/DELETE`)
+- `proxy.ts` (antes `middleware.ts`) bloquea `/admin/*`, las escrituras (`POST/PUT/DELETE`)
   de `/api/categories`, `/api/materials` y `/api/products`, y **todos**
   los métodos de `/api/admin/*` a quien no tenga sesión iniciada.
 - Los buckets de Supabase Storage (`product-image`, `category-image`)

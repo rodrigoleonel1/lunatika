@@ -14,11 +14,13 @@ const PROTECTED_API_PREFIXES = ["/api/categories", "/api/materials", "/api/produ
 // los métodos, no solo los que escriben.
 const ADMIN_ONLY_API_PREFIXES = ["/api/admin"];
 
-// Instancia "edge-safe" de NextAuth: solo decodifica el JWT de la cookie de
-// sesión, no usa el provider de Credentials (que necesita Node.js).
+// Instancia "liviana" de NextAuth: solo decodifica el JWT de la cookie de
+// sesión, no usa el provider de Credentials (que necesita MongoDB).
 const { auth } = NextAuth(authConfig);
 
-export default auth((req) => {
+// Next.js 16: el archivo `proxy.ts` (antes `middleware.ts`) corre en el
+// runtime de Node.js y el export se llama `proxy`.
+export const proxy = auth((req) => {
   const { pathname } = req.nextUrl;
   const isLoggedIn = !!req.auth;
 
