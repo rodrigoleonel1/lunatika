@@ -10,6 +10,8 @@ import { notFound } from "next/navigation";
 
 const SITE_URL = "https://lunatika.vercel.app";
 
+export const revalidate = 2592000;
+
 export async function generateMetadata({
   params,
 }: {

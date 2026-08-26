@@ -6,6 +6,8 @@ import ProductList from "@/components/product-list";
 
 const SITE_URL = "https://lunatika.vercel.app";
 
+export const revalidate = 2592000;
+
 export async function generateMetadata({
   params,
 }: {
