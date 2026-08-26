@@ -17,11 +17,13 @@ export default async function ProductsPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const limit = (await searchParams).limit;
+  const page = (await searchParams).page;
   const featured = (await searchParams).featured;
   const category = (await searchParams).category;
   const material = (await searchParams).material;
   const query = {
-    ...(limit ? { limit: Number(limit) } : {}),
+    limit: limit ? Number(limit) : 12,
+    ...(page ? { page: Number(page) } : {}),
     ...(featured ? { isFeatured: featured === "true" } : {}),
     ...(material ? { material: material.toString() } : {}),
     ...(category ? { category: category.toString() } : {}),

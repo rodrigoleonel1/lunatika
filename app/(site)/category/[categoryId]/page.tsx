@@ -33,12 +33,14 @@ export default async function CategoryPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const limit = (await searchParams).limit;
+  const page = (await searchParams).page;
   const featured = (await searchParams).featured;
   const material = (await searchParams).material;
   const categoryId = decodeURIComponent((await params).categoryId);
 
   const query = {
-    ...(limit ? { limit: Number(limit) } : {}),
+    limit: limit ? Number(limit) : 12,
+    ...(page ? { page: Number(page) } : {}),
     ...(featured ? { isFeatured: featured === "true" } : {}),
     ...(material ? { material: material.toString() } : {}),
     ...{ category: categoryId },

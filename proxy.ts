@@ -14,6 +14,23 @@ const PROTECTED_API_PREFIXES = ["/api/categories", "/api/materials", "/api/produ
 // los métodos, no solo los que escriben.
 const ADMIN_ONLY_API_PREFIXES = ["/api/admin"];
 
+// Rate limiting simple en memoria (free tier, sin KV). Ventana 60s, 60 req/min/IP
+// solo para GET /api/* y /sitemap.xml. Suficiente para portfolio, no es distribuido.
+const RATE_LIMIT_WINDOW = 60 * 1000;
+const RATE_LIMIT_MAX = 60;
+const BOT_ALLOWLIST = /googlebot|bingbot/i;
+
+declare global {
+  var _rateLimitStore: Map<string, { count: number; reset: number }> | undefined;
+}
+
+function getRateLimitStore(): Map<string, { count: number; reset: number }> {
+  if (!globalThis._rateLimitStore) {
+    globalThis._rateLimitStore = new Map();
+  }
+  return globalThis._rateLimitStore;
+}
+
 // Instancia "liviana" de NextAuth: solo decodifica el JWT de la cookie de
 // sesión, no usa el provider de Credentials (que necesita MongoDB).
 const { auth } = NextAuth(authConfig);
@@ -23,6 +40,43 @@ const { auth } = NextAuth(authConfig);
 export const proxy = auth((req) => {
   const { pathname } = req.nextUrl;
   const isLoggedIn = !!req.auth;
+
+  // Rate limiting solo para GET /api/* y /sitemap.xml (free tier)
+  const isRateLimitedPath =
+    (pathname.startsWith("/api/") || pathname === "/sitemap.xml") && req.method === "GET";
+
+  if (isRateLimitedPath) {
+    const userAgent = req.headers.get("user-agent") ?? "";
+    if (!BOT_ALLOWLIST.test(userAgent)) {
+      const ip =
+        req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+        req.headers.get("x-real-ip") ||
+        "unknown";
+      const key = `${ip}:${pathname.startsWith("/api/") ? "/api" : pathname}`;
+      const store = getRateLimitStore();
+      const now = Date.now();
+      const entry = store.get(key);
+
+      if (!entry || entry.reset < now) {
+        store.set(key, { count: 1, reset: now + RATE_LIMIT_WINDOW });
+      } else {
+        entry.count += 1;
+        if (entry.count > RATE_LIMIT_MAX) {
+          return NextResponse.json(
+            { message: "Too Many Requests" },
+            { status: 429, headers: { "Retry-After": "60" } }
+          );
+        }
+      }
+
+      // Limpieza periódica de entradas expiradas (probabilidad 10%)
+      if (Math.random() < 0.1) {
+        for (const [k, v] of store.entries()) {
+          if (v.reset < now) store.delete(k);
+        }
+      }
+    }
+  }
 
   // Proteger todas las páginas del panel de administración.
   if (pathname.startsWith(PROTECTED_PREFIX)) {
@@ -62,9 +116,8 @@ export const config = {
   matcher: [
     "/admin/:path*",
     "/login",
-    "/api/categories/:path*",
-    "/api/materials/:path*",
-    "/api/products/:path*",
-    "/api/admin/:path*",
+    "/api/:path*",
+    "/sitemap.xml",
+    "/robots.txt",
   ],
 };

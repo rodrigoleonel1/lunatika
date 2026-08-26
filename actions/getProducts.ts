@@ -50,8 +50,11 @@ export const getProducts = async (query: Query = {}): Promise<ProductType[]> => 
     .populate("category_id", "name")
     .populate("material_id", "name");
 
-  if (query.limit) {
-    mongoQuery = mongoQuery.limit(query.limit);
+  // Paginación: solo si se pide page/limit. Default Load More = 12
+  if (query.page !== undefined || query.limit !== undefined) {
+    const limit = query.limit ?? 12;
+    const page = query.page && query.page > 0 ? query.page : 1;
+    mongoQuery = mongoQuery.skip((page - 1) * limit).limit(limit);
   }
 
   const products = await mongoQuery.lean();

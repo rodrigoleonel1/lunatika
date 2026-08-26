@@ -14,6 +14,7 @@ export async function GET(req: Request) {
     const materialName = searchParams.get("material");
     const featured = searchParams.get("featured");
     const limit = searchParams.get("limit");
+    const page = searchParams.get("page");
     const includeArchived = searchParams.get("includeArchived") === "true";
 
     await connectDB();
@@ -49,8 +50,12 @@ export async function GET(req: Request) {
       .populate("category_id", "name")
       .populate("material_id", "name");
 
-    if (limit) {
-      query = query.limit(Number(limit));
+    if (page || limit) {
+      const parsedLimit = limit ? Number(limit) : 12;
+      const parsedPage = page ? Number(page) : 1;
+      const safeLimit = Number.isFinite(parsedLimit) && parsedLimit > 0 && parsedLimit <= 50 ? parsedLimit : 12;
+      const safePage = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+      query = query.skip((safePage - 1) * safeLimit).limit(safeLimit);
     }
 
     const products = await query.lean();

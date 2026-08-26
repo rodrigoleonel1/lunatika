@@ -35,4 +35,5 @@ export interface Query {
   material?: string;
   isFeatured?: boolean;
   limit?: number;
+  page?: number;
 }
