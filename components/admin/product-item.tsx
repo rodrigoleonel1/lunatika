@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Product } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -46,12 +45,12 @@ export const ProductItem = ({ product }: ProductItemProps) => {
             <source src={product.images[0]} type="video/mp4" />
           </video>
         ) : (
-          <Image
+          <img
             src={product.images[0]}
             alt={product.name}
-            fill
-            sizes="(max-width: 768px) 50vw, 200px"
-            className="object-cover"
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         )}
         {product.isArchived && (

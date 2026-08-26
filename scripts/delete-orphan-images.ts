@@ -45,8 +45,8 @@ async function main() {
   const [productDocs, categoryDocs, productFiles, categoryFiles] = await Promise.all([
     Product.find({}, { images: 1 }).lean(),
     Category.find({}, { billboard: 1 }).lean(),
-    listStorageFiles(PRODUCT_IMAGE_BUCKET),
-    listStorageFiles(CATEGORY_IMAGE_BUCKET),
+    listStorageFiles(PRODUCT_IMAGE_BUCKET, 1000),
+    listStorageFiles(CATEGORY_IMAGE_BUCKET, 1000),
   ]);
 
   const usedUrls = new Set<string>();

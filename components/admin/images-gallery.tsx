@@ -210,7 +210,6 @@ export const ImagesGallery = ({ images }: ImagesGalleryProps) => {
                       <source src={img.url} type="video/mp4" />
                     </video>
                   ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={img.url}
                       alt={img.name}

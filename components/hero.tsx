@@ -1,18 +1,17 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "./ui/button";
 
 export default function Hero() {
   return (
     <section className="relative">
       <div className="absolute inset-0">
-        <Image
+        <img
           src="/hero.jpg"
           alt="Colección de accesorios Lunatika: aritos, pulseras, anillos y cadenas"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
       </div>

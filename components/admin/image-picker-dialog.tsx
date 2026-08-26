@@ -143,7 +143,6 @@ export const ImagePickerDialog = ({
                       // diálogo animado, el modo `fill` de next/image puede medir mal
                       // el tamaño del contenedor mientras corre la animación de
                       // apertura, y las miniaturas quedan apiladas.
-                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={file.url}
                         alt={file.name}

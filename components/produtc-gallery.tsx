@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 
 interface ProductGalleryProps {
   mainImage: string;
@@ -30,13 +29,13 @@ export default function ProductGallery({
             Tu navegador no soporta el elemento de video.
           </video>
         ) : (
-          <Image
+          <img
             src={selectedImage}
             alt={productName}
-            fill
-            priority
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover object-center"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+            className="h-full w-full object-cover object-center"
           />
         )}
       </main>
@@ -46,7 +45,7 @@ export default function ProductGallery({
             <button
               key={index}
               onClick={() => setSelectedImage(image)}
-              className={`relative aspect-square w-full overflow-hidden rounded-lg ${
+              className={`relative aspect-square w-full overflow-hidden rounded-lg cursor-pointer ${
                 selectedImage === image ? "ring-2 ring-black" : ""
               }`}
             >
@@ -66,16 +65,16 @@ export default function ProductGallery({
             <button
               key={index}
               onClick={() => setSelectedImage(image)}
-              className={`relative aspect-square w-full overflow-hidden rounded-lg ${
+              className={`relative aspect-square w-full overflow-hidden rounded-lg cursor-pointer ${
                 selectedImage === image ? "ring-2 ring-black" : ""
               }`}
             >
-              <Image
+              <img
                 src={image}
                 alt={`${productName} - vista ${index + 1}`}
-                fill
-                sizes="80px"
-                className="object-cover object-center"
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover object-center"
               />
             </button>
           )

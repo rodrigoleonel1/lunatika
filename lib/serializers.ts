@@ -1,6 +1,4 @@
 import "server-only";
-import Category from "@/lib/models/Category";
-import Material from "@/lib/models/Material";
 import type { Category as CategoryType, Material as MaterialType, Product as ProductType } from "@/lib/types";
 
 /**
@@ -78,12 +76,4 @@ export function serializeProduct(input: unknown): ProductType {
   };
 }
 
-export async function getCategoryNameMap(): Promise<Record<string, string>> {
-  const categories = await Category.find().lean();
-  return Object.fromEntries(categories.map((c) => [c._id.toString(), c.name]));
-}
 
-export async function getMaterialNameMap(): Promise<Record<string, string>> {
-  const materials = await Material.find().lean();
-  return Object.fromEntries(materials.map((m) => [m._id.toString(), m.name]));
-}

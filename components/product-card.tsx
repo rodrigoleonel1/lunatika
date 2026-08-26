@@ -1,6 +1,5 @@
 import { Product } from "@/lib/types";
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "./ui/button";
 
 interface ProductCard {
@@ -24,12 +23,12 @@ export default function ProductCard({ product }: ProductCard) {
             Tu navegador no soporta el elemento de video.
           </video>
         ) : (
-          <Image
+          <img
             src={product.images[0]}
             alt={product.name}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-cover"
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover"
           />
         )}
       </div>

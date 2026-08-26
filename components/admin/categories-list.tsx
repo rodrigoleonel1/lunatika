@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Category } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -47,12 +46,12 @@ export const CategoriesList = ({ categories }: CategoriesListProps) => {
         >
           <div className="space-y-1 ">
             <div className="relative w-full aspect-video overflow-hidden rounded-md">
-              <Image
+              <img
                 src={category.billboard}
                 alt={category.name}
-                fill
-                sizes="(max-width: 768px) 100vw, 400px"
-                className="object-cover"
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
             <h2>Categoría: {category.name}</h2>

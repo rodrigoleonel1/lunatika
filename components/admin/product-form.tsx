@@ -6,14 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import Image from "next/image";
 import { Category, Material, Product } from "@/lib/types";
 import { productSchema } from "@/lib/zod";
-import {
-  supabaseStorage,
-  PRODUCT_IMAGE_BUCKET,
-  removeStorageFiles,
-} from "@/lib/supabase-storage";
+import { PRODUCT_IMAGE_BUCKET, removeStorageFiles } from "@/lib/supabase-storage";
 import { ImagePickerDialog } from "@/components/admin/image-picker-dialog";
 import { Heading } from "@/components/admin/heading";
 import { Input } from "@/components/ui/input";
@@ -102,21 +97,16 @@ export const ProductForm = ({
 
     try {
       for (const file of files) {
-        const fileName = encodeURIComponent(`${Date.now()}-${file.name}`);
-        const { error } = await supabaseStorage.storage
-          .from(PRODUCT_IMAGE_BUCKET)
-          .upload(fileName, file, {
-            contentType: file.type,
-            upsert: false,
-          });
-
-        if (error) throw error;
-
-        const { data: publicUrlData } = supabaseStorage.storage
-          .from(PRODUCT_IMAGE_BUCKET)
-          .getPublicUrl(fileName);
-
-        uploadedUrls.push(publicUrlData?.publicUrl || "");
+        const fd = new FormData();
+        fd.append("bucket", PRODUCT_IMAGE_BUCKET);
+        fd.append("file", file);
+        const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+        if (!res.ok) {
+          const data = await res.json().catch(() => null);
+          throw new Error(data?.message || "No se pudo subir la imagen.");
+        }
+        const data = (await res.json()) as { url: string };
+        uploadedUrls.push(data.url);
       }
 
       setUploadedImageUrls((prev) => [...prev, ...uploadedUrls]);
@@ -341,12 +331,12 @@ export const ProductForm = ({
                       <source src={url} type="video/mp4" />
                     </video>
                   ) : (
-                    <Image
+                    <img
                       src={url}
                       alt="Vista previa"
-                      fill
-                      sizes="80px"
-                      className="object-cover rounded border"
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover rounded border"
                     />
                   )}
                   <button

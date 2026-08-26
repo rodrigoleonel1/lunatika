@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
+import sharp from "sharp";
 import { connectDB } from "@/lib/mongodb";
 import Product from "@/lib/models/Product";
 import Category from "@/lib/models/Category";
@@ -86,11 +87,25 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ message: "Faltan datos válidos" }, { status: 400 });
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
+    const rawBuffer = Buffer.from(await file.arrayBuffer());
+    const isVideo = file.type === "video/mp4" || path.toLowerCase().endsWith(".mp4");
+
+    let buffer: Buffer = rawBuffer;
+    let contentType = file.type || "image/jpeg";
+
+    if (!isVideo && file.type.startsWith("image/")) {
+      const metadata = await sharp(rawBuffer).metadata();
+      let pipeline = sharp(rawBuffer).rotate();
+      if ((metadata.width ?? 0) > 1200 || (metadata.height ?? 0) > 1200) {
+        pipeline = pipeline.resize({ width: 1200, height: 1200, fit: "inside", withoutEnlargement: true });
+      }
+      buffer = await pipeline.webp({ quality: 80, effort: 4 }).toBuffer();
+      contentType = "image/webp";
+    }
 
     const { error } = await supabaseStorage.storage
       .from(bucket)
-      .upload(path, buffer, { contentType: file.type || "image/jpeg", upsert: true });
+      .upload(path, buffer, { contentType, upsert: true, cacheControl: "31536000" });
 
     if (error) throw error;
 

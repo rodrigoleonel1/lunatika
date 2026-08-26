@@ -4,7 +4,6 @@ import { Heading } from "./ui/heading";
 import { IoChevronForward } from "react-icons/io5";
 import NoResults from "./ui/no-results";
 import Link from "next/link";
-import Image from "next/image";
 
 interface CategoriesListProps {
   title: string;
@@ -22,15 +21,15 @@ export const CategoriesList = ({ title, items }: CategoriesListProps) => {
           <Link
             href={`/category/${encodeURIComponent(item.name)}`}
             key={item.id}
-            className="flex flex-col items-center justify-between bg-white rounded-lg gap-4 shadow-md p-4"
+            className="flex flex-col items-center justify-between bg-white rounded-lg gap-4 shadow-md p-4 cursor-pointer"
           >
             <div className="relative w-full aspect-square overflow-hidden rounded-lg bg-gray-200">
-              <Image
+              <img
                 src={item.billboard}
                 alt={`Categoría ${item.name}`}
-                fill
-                sizes="(max-width: 768px) 45vw, 22vw"
-                className="object-cover"
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
             <div className="flex justify-between w-full items-center">

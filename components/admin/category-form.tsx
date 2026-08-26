@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import Image from "next/image";
 import { Category } from "@/lib/types";
 import { categorySchema } from "@/lib/zod";
 import { Heading } from "@/components/admin/heading";
@@ -20,11 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  supabaseStorage,
-  CATEGORY_IMAGE_BUCKET,
-  removeStorageFiles,
-} from "@/lib/supabase-storage";
+import { CATEGORY_IMAGE_BUCKET, removeStorageFiles } from "@/lib/supabase-storage";
 import { ImagePickerDialog } from "@/components/admin/image-picker-dialog";
 
 interface CategoryFromProps {
@@ -61,21 +56,16 @@ export const CategoryForm = ({ category }: CategoryFromProps) => {
   const uploadImage = async (file: File) => {
     setUploading(true);
     try {
-      const fileName = `${Date.now()}-${file.name}`;
-      const { error } = await supabaseStorage.storage
-        .from(CATEGORY_IMAGE_BUCKET)
-        .upload(fileName, file, {
-          contentType: file.type,
-          upsert: false,
-        });
-
-      if (error) throw error;
-
-      const { data: publicUrl } = supabaseStorage.storage
-        .from(CATEGORY_IMAGE_BUCKET)
-        .getPublicUrl(fileName);
-
-      setUploadedImageUrls(publicUrl.publicUrl);
+      const fd = new FormData();
+      fd.append("bucket", CATEGORY_IMAGE_BUCKET);
+      fd.append("file", file);
+      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.message || "No se pudo subir la imagen.");
+      }
+      const data = (await res.json()) as { url: string };
+      setUploadedImageUrls(data.url);
     } catch (error) {
       toast.error("No se pudo subir la imagen.");
       console.log("Error subiendo la imagen:", error);
@@ -164,12 +154,12 @@ export const CategoryForm = ({ category }: CategoryFromProps) => {
             <section>
               <h2 className="text-sm font-medium">Portada de la categoría</h2>
               <figure className="relative rounded-md overflow-hidden w-40 h-40 bg-gray-100">
-                <Image
+                <img
                   src={uploadedImageUrl || category!.billboard}
                   alt={category?.name ?? "Vista previa"}
-                  fill
-                  sizes="160px"
-                  className="object-cover"
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
               </figure>
             </section>
